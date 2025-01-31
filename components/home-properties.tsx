@@ -1,8 +1,11 @@
-import properties from "@/properties.json";
 import Property from "@/components/property";
+import { PropertyVM } from "@/models/PropertyVM";
+import { getProperties } from "@/utils/request";
 import Link from "next/link";
 
-const HomeProperties = () => {
+const HomeProperties = async () => {
+  const properties = await getProperties();
+
   const recentProperties = properties
     .sort(() => Math.random() - Math.random())
     .slice(0, 3);
@@ -17,7 +20,7 @@ const HomeProperties = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {recentProperties.length === 0
               ? "None found"
-              : recentProperties.map((property) => (
+              : recentProperties.map((property: PropertyVM) => (
                   <Property key={property._id} property={property}></Property>
                 ))}
           </div>
